@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
-import { ArrowRight, ChevronRight } from 'lucide-react';
-import { projects, homeHeroSlides, industryAssociations, contactInfo } from '@/data/projects';
-import Parallax from '@/components/Parallax';
+import { useState, useEffect, useCallback } from 'react';
+import { ArrowRight } from 'lucide-react';
+import {
+  homeHeroSlides,
+  homeFeaturedProjects,
+  homeProcessSteps,
+  industryAssociations,
+} from '@/data/projects';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
@@ -10,240 +14,251 @@ interface HomePageProps {
 export default function HomePage({ onNavigate }: HomePageProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % homeHeroSlides.length);
-    }, 5000);
-    return () => clearInterval(interval);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % homeHeroSlides.length);
   }, []);
 
-  const featuredProjects = projects.slice(0, 6);
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <Parallax src="/images/misc/pic7.jpeg" alt="Architectural design" height="h-screen min-h-[600px]" speed={0.5}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70" />
-        <div className="relative h-full flex items-center justify-center">
-          <div className="text-center px-4 max-w-4xl mx-auto">
-            <div className="overflow-hidden">
-              {homeHeroSlides.map((slide, index) => (
-                <div
-                  key={index}
-                  className={`transition-all duration-700 ${
-                    index === currentSlide
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-8 absolute inset-0 flex items-center justify-center'
-                  }`}
+    <div className="bg-secondary">
+      {/* Hero Slider - full screen */}
+      <section className="relative h-screen overflow-hidden">
+        {homeHeroSlides.map((slide, i) => (
+          <div
+            key={i}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              i === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+            <div className="absolute inset-0 bg-black/60" />
+            <div className="relative h-full flex items-center justify-center px-6">
+              <div className="text-center max-w-3xl">
+                <h2
+                  className="text-white text-3xl md:text-5xl lg:text-6xl font-light mb-6"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
-                  <div className="text-center px-4 max-w-4xl">
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-tight mb-6">
-                      {slide.title}
-                    </h1>
-                    <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
-                      {slide.text}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-2 justify-center mt-12">
-              {homeHeroSlides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                      ? 'w-10 bg-amber-400'
-                      : 'w-2 bg-white/40 hover:bg-white/60'
-                  }`}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <ChevronRight className="text-white/50 rotate-90" size={28} />
-        </div>
-      </Parallax>
-
-      {/* About Company Section */}
-      <section className="py-24 bg-stone-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-amber-600 text-sm font-semibold uppercase tracking-widest mb-4">
-                About Us
-              </p>
-              <h2 className="text-3xl md:text-5xl font-light text-stone-800 mb-6 leading-tight">
-                Our Company
-              </h2>
-              <p className="text-stone-600 text-lg leading-relaxed mb-6">
-                25 years of Experience
-              </p>
-              <p className="text-stone-500 leading-relaxed mb-8">
-                With a quarter-century of accumulated expertise and insights, we bring a wealth of experience to every project, ensuring unparalleled excellence in design and execution across diverse built environments.
-              </p>
-              <button
-                onClick={() => onNavigate('/about')}
-                className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium transition-colors group"
-              >
-                Learn More
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            <div className="relative">
-              <img
-                src="/images/misc/S7-2-1.jpg"
-                alt="Iroamd3 architectural work"
-                className="w-full h-[450px] object-cover rounded-sm shadow-xl"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-amber-500 text-white px-8 py-4 rounded-sm shadow-lg hidden md:block">
-                <p className="text-3xl font-light">25</p>
-                <p className="text-sm uppercase tracking-wider">Years Experience</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Our Process */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-amber-600 text-sm font-semibold uppercase tracking-widest mb-4">
-              Our Work
-            </p>
-            <h2 className="text-3xl md:text-5xl font-light text-stone-800">
-              Our Process
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { num: "01", title: "Consultation", desc: "We begin with understanding your vision, needs, and aspirations through detailed consultation." },
-              { num: "02", title: "Design", desc: "Our design-driven approach creates elegant and crafted solutions that develop organically from the site." },
-              { num: "03", title: "Documentation", desc: "Comprehensive documentation ensures every detail is captured for flawless execution." },
-            ].map((step) => (
-              <div
-                key={step.num}
-                className="group relative bg-stone-50 p-8 rounded-sm hover:bg-stone-900 transition-all duration-500 cursor-pointer"
-                onClick={() => onNavigate('/process')}
-              >
-                <div className="text-5xl font-light text-amber-500 mb-4 group-hover:text-amber-400 transition-colors">
-                  {step.num}
-                </div>
-                <h3 className="text-xl font-medium text-stone-800 mb-3 group-hover:text-white transition-colors">
-                  {step.title}
-                </h3>
-                <p className="text-stone-500 leading-relaxed group-hover:text-white/70 transition-colors">
-                  {step.desc}
+                  {slide.title}
+                </h2>
+                <p className="text-white/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+                  {slide.text}
                 </p>
               </div>
-            ))}
+            </div>
+          </div>
+        ))}
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+          {homeHeroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentSlide(i)}
+              className={`w-8 h-[2px] transition-all ${
+                i === currentSlide ? 'bg-primary' : 'bg-white/30'
+              }`}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Three bordered columns: About, Process, Profile */}
+      <section className="bg-secondary">
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
+          {/* About */}
+          <button
+            onClick={() => onNavigate('/about')}
+            className="group text-left p-10 md:p-12 lg:p-16 border-r border-white/10 hover:bg-secondary-light transition-colors"
+          >
+            <h3
+              className="text-primary text-lg uppercase tracking-[10px] mb-6 font-light"
+              style={{ fontFamily: 'Arial, sans-serif', fontWeight: 100 }}
+            >
+              About
+            </h3>
+            <p className="text-white/80 text-[15px] leading-[2em]">
+              A highly skilled professional equipped to tackle the unique
+              opportunities and challenges presented by your project.
+            </p>
+          </button>
+
+          {/* Process */}
+          <button
+            onClick={() => onNavigate('/process')}
+            className="group text-left p-10 md:p-12 lg:p-16 border-r border-white/10 hover:bg-secondary-light transition-colors"
+          >
+            <h3
+              className="text-primary text-lg uppercase tracking-[10px] mb-6 font-light"
+              style={{ fontFamily: 'Arial, sans-serif', fontWeight: 100 }}
+            >
+              Process
+            </h3>
+            <p className="text-white/80 text-[15px] leading-[2em]">
+              A feasibility study is an assessment that determines the
+              likelihood of success for a proposed project.
+            </p>
+          </button>
+
+          {/* Profile */}
+          <button
+            onClick={() => onNavigate('/profile')}
+            className="group text-left p-10 md:p-12 lg:p-16 hover:bg-secondary-light transition-colors"
+          >
+            <h3
+              className="text-primary text-lg uppercase tracking-[10px] mb-6 font-light"
+              style={{ fontFamily: 'Arial, sans-serif', fontWeight: 100 }}
+            >
+              Profile
+            </h3>
+            <p className="text-white/80 text-[15px] leading-[2em]">
+              Iroamd3 is a design driven practice that produce elegant and
+              crafted solutions, developing organically from the site…
+            </p>
+          </button>
+        </div>
+      </section>
+
+      {/* About Us / Our Company section - dark with pic7 background */}
+      <section className="relative py-32 md:py-40 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/images/misc/pic7.jpeg)' }}
+        />
+        <div className="absolute inset-0 bg-black/80" />
+        <div className="relative max-w-7xl mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+              <p
+                className="text-primary text-[18px] uppercase tracking-[10px] font-thin mb-4"
+                style={{ fontFamily: 'Arial, sans-serif' }}
+              >
+                About Us
+              </p>
+              <h2
+                className="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-8"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                OUR COMPANY
+              </h2>
+              <p className="text-primary text-xl md:text-2xl mb-2">
+                25 years of Experience
+              </p>
+              <p className="text-white/70 text-[15px] leading-[2em] max-w-lg">
+                With a quarter-century of accumulated expertise and insights,
+                we bring a wealth of experience to every project, ensuring
+                unparalleled excellence in design and execution across diverse
+                built environments
+              </p>
+            </div>
+
+            {/* Process steps */}
+            <div className="grid grid-cols-3 gap-4">
+              {homeProcessSteps.map((step) => (
+                <div
+                  key={step.num}
+                  className="border border-white/10 p-6 text-center hover:border-primary transition-colors"
+                >
+                  <p className="text-primary text-3xl font-light mb-3">
+                    {step.num}
+                  </p>
+                  <h4
+                    className="text-white text-sm uppercase tracking-wider mb-3"
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
+                  >
+                    {step.title}
+                  </h4>
+                  <p className="text-white/50 text-xs leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Projects */}
-      <section className="py-24 bg-stone-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12">
-            <div>
-              <p className="text-amber-600 text-sm font-semibold uppercase tracking-widest mb-4">
-                Our Works
-              </p>
-              <h2 className="text-3xl md:text-5xl font-light text-stone-800">
-                Featured Projects
-              </h2>
-            </div>
+      {/* Our Works */}
+      <section className="bg-secondary py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex items-end justify-between mb-12">
+            <h2
+              className="text-white text-3xl md:text-4xl font-bold"
+              style={{ fontFamily: 'Poppins, sans-serif' }}
+            >
+              OUR WORKS
+            </h2>
             <button
               onClick={() => onNavigate('/projects')}
-              className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium transition-colors group mt-4 md:mt-0"
+              className="text-primary text-[12px] uppercase tracking-wider hover:opacity-80 transition-opacity flex items-center gap-2"
+              style={{ fontFamily: 'Poppins, sans-serif' }}
             >
-              View All Projects
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              See More <ArrowRight size={14} />
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProjects.map((project) => (
-              <div
+            {homeFeaturedProjects.map((project) => (
+              <button
                 key={project.id}
-                className="group cursor-pointer overflow-hidden rounded-sm bg-white shadow-md hover:shadow-2xl transition-all duration-500"
                 onClick={() => onNavigate(`/projects/${project.slug}`)}
+                className="group relative overflow-hidden aspect-[4/3]"
               >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-stone-800 font-medium text-lg mb-1 group-hover:text-amber-600 transition-colors">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-left">
+                  <p className="text-primary text-[12px] uppercase tracking-wider mb-1">
                     {project.title}
-                  </h3>
-                  <p className="text-stone-400 text-sm uppercase tracking-wide">
-                    {project.category} {project.year && `· ${project.year}`}
                   </p>
+                  <p className="text-white text-sm capitalize">
+                    {project.category} {project.year}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-white/60 text-xs mt-2 group-hover:text-primary transition-colors">
+                    See More <ArrowRight size={12} />
+                  </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
       {/* Industry Associations */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-amber-600 text-sm font-semibold uppercase tracking-widest mb-3">
-              Industry Associations
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+      <section className="bg-secondary-light py-20 border-t border-dark-border">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <h2
+            className="text-white text-2xl md:text-3xl font-bold text-center mb-12"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            Industry Associations
+          </h2>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
             {industryAssociations.map((assoc) => (
               <div
                 key={assoc.name}
-                className="flex items-center justify-center h-24 w-full max-w-[200px] grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                className="flex items-center justify-center grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all"
               >
                 <img
                   src={assoc.logo}
                   alt={assoc.name}
-                  className="max-h-full max-w-full object-contain"
+                  className="max-h-20 max-w-[160px] object-contain"
                 />
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <Parallax src="/images/projects/project-5.jpg" alt="" height="py-24" speed={0.3}>
-        <div className="absolute inset-0 bg-stone-900/90" />
-        <div className="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-5xl font-light text-white mb-6">
-            Ready to Start Your Project?
-          </h2>
-          <p className="text-white/60 text-lg mb-8 max-w-2xl mx-auto">
-            From conception through to handover, we tailor a services package to align with your needs.
-          </p>
-          <button
-            onClick={() => onNavigate('/contact')}
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-sm font-medium transition-all duration-300 group"
-          >
-            Get in Touch
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-          <p className="text-white/40 mt-6 text-sm">
-            {contactInfo.phone} · {contactInfo.email}
-          </p>
-        </div>
-      </Parallax>
     </div>
   );
 }

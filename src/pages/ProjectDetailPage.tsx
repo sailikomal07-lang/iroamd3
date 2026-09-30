@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import { ArrowLeft, ArrowRight, Building2, DollarSign } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { projects } from '@/data/projects';
-import Breadcrumb from '@/components/Breadcrumb';
-import Parallax from '@/components/Parallax';
 
 interface ProjectDetailPageProps {
   slug: string;
@@ -10,18 +7,17 @@ interface ProjectDetailPageProps {
 }
 
 export default function ProjectDetailPage({ slug, onNavigate }: ProjectDetailPageProps) {
-  const [activeImage, setActiveImage] = useState(0);
-
   const project = projects.find((p) => p.slug === slug);
+  const currentIndex = projects.findIndex((p) => p.slug === slug);
 
   if (!project) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="bg-secondary pt-32 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl text-stone-800 mb-4">Project Not Found</h1>
+          <p className="text-white mb-4">Project not found</p>
           <button
             onClick={() => onNavigate('/projects')}
-            className="text-amber-600 hover:text-amber-700 font-medium"
+            className="text-primary hover:opacity-80"
           >
             Back to Projects
           </button>
@@ -30,148 +26,117 @@ export default function ProjectDetailPage({ slug, onNavigate }: ProjectDetailPag
     );
   }
 
-  const gallery = project.gallery || [project.image];
-  const currentIndex = projects.findIndex((p) => p.id === project.id);
-  const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
-  const nextProject = projects[(currentIndex + 1) % projects.length];
+  const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
+  const nextProject =
+    currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
   return (
-    <div className="bg-white min-h-screen">
-      <Parallax src={project.image} alt={project.title} height="h-[60vh] min-h-[400px]">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/60" />
-        <div className="absolute inset-0 flex items-end justify-start">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-12">
-            <p className="text-amber-400 text-sm uppercase tracking-widest mb-3">
-              {project.category} {project.year && `· ${project.year}`}
-            </p>
-            <h1 className="text-3xl md:text-5xl font-light text-white tracking-tight">
+    <div className="bg-secondary pt-20">
+      {/* Hero image */}
+      <section className="relative h-[60vh] overflow-hidden">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+          <div className="max-w-7xl mx-auto">
+            <h1
+              className="text-white text-3xl md:text-4xl lg:text-5xl font-bold"
+              style={{ fontFamily: 'Poppins, sans-serif' }}
+            >
               {project.title}
             </h1>
-          </div>
-        </div>
-      </Parallax>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <Breadcrumb
-          items={[
-            { label: 'Home', path: '/' },
-            { label: 'Projects', path: '/projects' },
-            { label: project.title },
-          ]}
-          onNavigate={onNavigate}
-        />
-      </div>
-
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main image / Gallery */}
-            <div className="lg:col-span-2">
-              <div className="relative overflow-hidden rounded-sm mb-4">
-                <img
-                  src={gallery[activeImage]}
-                  alt={`${project.title} - Image ${activeImage + 1}`}
-                  className="w-full h-[500px] object-cover"
-                />
-              </div>
-              {gallery.length > 1 && (
-                <div className="grid grid-cols-5 gap-3">
-                  {gallery.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`overflow-hidden rounded-sm transition-all duration-300 ${
-                        i === activeImage
-                          ? 'ring-2 ring-amber-500'
-                          : 'opacity-60 hover:opacity-100'
-                      }`}
-                    >
-                      <img
-                        src={img}
-                        alt={`Thumbnail ${i + 1}`}
-                        className="w-full h-20 object-cover"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar info */}
-            <div className="space-y-6">
-              <div className="bg-stone-50 p-6 rounded-sm">
-                <h2 className="text-stone-800 text-xl font-medium mb-4">Project Details</h2>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-stone-400 text-xs uppercase tracking-wider mb-1">Category</p>
-                    <p className="text-stone-700">{project.category}</p>
-                  </div>
-                  {project.year && (
-                    <div>
-                      <p className="text-stone-400 text-xs uppercase tracking-wider mb-1">Year</p>
-                      <p className="text-stone-700">{project.year}</p>
-                    </div>
-                  )}
-                  {project.builder && (
-                    <div>
-                      <p className="text-stone-400 text-xs uppercase tracking-wider mb-1">Builder</p>
-                      <p className="text-stone-700 flex items-center gap-2">
-                        <Building2 size={16} className="text-amber-500" />
-                        {project.builder}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {project.salesInfo && project.salesInfo.length > 0 && (
-                <div className="bg-amber-50 p-6 rounded-sm border-l-4 border-amber-500">
-                  <h3 className="text-stone-800 font-medium mb-4 flex items-center gap-2">
-                    <DollarSign size={18} className="text-amber-500" />
-                    Sales Information
-                  </h3>
-                  <ul className="space-y-2">
-                    {project.salesInfo.map((info, i) => (
-                      <li key={i} className="text-stone-600 text-sm leading-relaxed">
-                        {info}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            <p className="text-primary text-lg mt-2 capitalize">
+              {project.category} {project.year}
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Project navigation */}
-      <section className="py-12 border-t border-stone-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between gap-4">
-            <button
-              onClick={() => onNavigate(`/projects/${prevProject.slug}`)}
-              className="group flex items-center gap-4 p-4 rounded-sm hover:bg-stone-50 transition-colors text-left"
-            >
-              <ArrowLeft size={24} className="text-stone-400 group-hover:text-amber-500 transition-colors shrink-0" />
-              <div>
-                <p className="text-stone-400 text-xs uppercase tracking-wider">Previous</p>
-                <p className="text-stone-700 group-hover:text-amber-600 transition-colors text-sm font-medium">
-                  {prevProject.title}
-                </p>
+      {/* Details */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-5xl mx-auto px-6 md:px-10">
+          {project.builder && (
+            <div className="mb-8">
+              <h3
+                className="text-white text-sm uppercase tracking-wider mb-2"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                Built By
+              </h3>
+              <p className="text-primary text-lg">{project.builder}</p>
+            </div>
+          )}
+
+          {project.salesInfo && project.salesInfo.length > 0 && (
+            <div className="mb-12">
+              <h3
+                className="text-white text-sm uppercase tracking-wider mb-4"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                Sales Information
+              </h3>
+              <ul className="space-y-2">
+                {project.salesInfo.map((info, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 text-text text-[15px] leading-relaxed"
+                  >
+                    <span className="text-primary mt-1">▪</span>
+                    {info}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Gallery */}
+          {project.gallery && project.gallery.length > 0 && (
+            <div className="mb-12">
+              <h3
+                className="text-white text-sm uppercase tracking-wider mb-6"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                Gallery
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {project.gallery.map((img, i) => (
+                  <div key={i} className="overflow-hidden aspect-[4/3]">
+                    <img
+                      src={img}
+                      alt={`${project.title} ${i + 1}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                ))}
               </div>
-            </button>
-            <button
-              onClick={() => onNavigate(`/projects/${nextProject.slug}`)}
-              className="group flex items-center gap-4 p-4 rounded-sm hover:bg-stone-50 transition-colors text-right sm:text-right"
-            >
-              <div>
-                <p className="text-stone-400 text-xs uppercase tracking-wider">Next</p>
-                <p className="text-stone-700 group-hover:text-amber-600 transition-colors text-sm font-medium">
-                  {nextProject.title}
-                </p>
-              </div>
-              <ArrowRight size={24} className="text-stone-400 group-hover:text-amber-500 transition-colors shrink-0" />
-            </button>
+            </div>
+          )}
+
+          {/* Prev/Next navigation */}
+          <div className="flex items-center justify-between border-t border-dark-border pt-8 mt-8">
+            {prevProject ? (
+              <button
+                onClick={() => onNavigate(`/projects/${prevProject.slug}`)}
+                className="flex items-center gap-2 text-text hover:text-primary transition-colors text-sm"
+              >
+                <ArrowLeft size={16} /> {prevProject.title}
+              </button>
+            ) : (
+              <span />
+            )}
+            {nextProject ? (
+              <button
+                onClick={() => onNavigate(`/projects/${nextProject.slug}`)}
+                className="flex items-center gap-2 text-text hover:text-primary transition-colors text-sm text-right"
+              >
+                {nextProject.title} <ArrowRight size={16} />
+              </button>
+            ) : (
+              <span />
+            )}
           </div>
         </div>
       </section>

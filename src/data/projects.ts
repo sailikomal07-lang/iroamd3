@@ -166,6 +166,14 @@ export const projects: Project[] = [
     builder: "Christie Projects",
     salesInfo: ["Unit A sold in 2023 for $1,900,000", "Unit B sold in 2022 for $1,895,000"],
   },
+  {
+    id: 17,
+    slug: "23-stanley-st-black-rock-2026",
+    title: "23 Stanley St, Black Rock",
+    category: "Dual Occupancy",
+    year: "2026",
+    image: "/images/projects/project-7.jpg",
+  },
 ];
 
 export const collaborators = [
@@ -177,6 +185,13 @@ export const collaborators = [
       "Christie Projects in-house range of 'soft services' ensure projects are on-trend, within budget, and take into account key market considerations.",
       "We offer a complete, end-to-end solution, from client brief to delivery. This approach assists property owners, renovators, builders, and developers to correctly position developments for specific target markets.",
       "Detailed specification documentation allows clients to pull together key details for projects, whether renovations, new project builds, or property development.",
+    ],
+    softServices: [
+      "Detailed specification documents, complete with brands, codes, and manufacturer specifications, allowing builders to provide more detailed quotes.",
+      "Internal and external colour palette and product selections",
+      "Product procurement via wholesale networks",
+      "Design suggestion to maximise the environment spatial footprint, and",
+      "Design aesthetics and key considerations for built form.",
     ],
   },
   {
@@ -290,7 +305,7 @@ export const contactInfo = {
 
 export const aboutBio = [
   "John Laughton",
-  "Director / Principal Designer",
+  "Director/ Principal Designer",
   "A highly skilled professional equipped to tackle the unique opportunities and challenges presented by your project.",
 ];
 
@@ -332,13 +347,24 @@ export const homeHeroSlides = [
   {
     title: "Innovative Designs",
     text: "At Iroamd3, we merge visionary concepts with precise execution to craft innovative designs and timeless structures",
+    image: "/images/misc/pic7.jpeg",
   },
   {
     title: "Crafting Spaces",
     text: "Our mission at Iroamd3 is to create environments that resonate with the essence of inspired living through meticulous craftsmanship and thoughtful design",
+    image: "/images/projects/project-4.jpg",
   },
   {
     title: "Brilliant Functionality",
     text: "Iroamd3 is dedicated to designing spaces that not only exude architectural elegance but also serve as functional brilliance, enhancing lives and experiences",
+    image: "/images/projects/project-5.jpg",
   },
+];
+
+export const homeFeaturedProjects = projects.slice(0, 6);
+
+export const homeProcessSteps = [
+  { num: "01", title: "Consultation", desc: "We begin with understanding your vision, needs, and aspirations through detailed consultation." },
+  { num: "02", title: "Design", desc: "Our design-driven approach creates elegant and crafted solutions that develop organically from the site." },
+  { num: "03", title: "Documentation", desc: "Comprehensive documentation ensures every detail is captured for flawless execution." },
 ];

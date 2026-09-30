@@ -31,7 +31,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-secondary flex flex-col">
       <Header currentPath={path} onNavigate={navigate} />
       <main className="flex-1">{renderPage()}</main>
       <Footer onNavigate={navigate} />

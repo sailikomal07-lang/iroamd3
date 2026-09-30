@@ -1,72 +1,100 @@
 import { collaborators } from '@/data/projects';
-import Breadcrumb from '@/components/Breadcrumb';
-import Parallax from '@/components/Parallax';
 
 interface CollaboratorsPageProps {
   onNavigate: (path: string) => void;
 }
 
-export default function CollaboratorsPage({ onNavigate }: CollaboratorsPageProps) {
+export default function CollaboratorsPage({ onNavigate: _onNavigate }: CollaboratorsPageProps) {
   return (
-    <div className="bg-white min-h-screen">
-      <Parallax src="/images/projects/project-14.jpg" alt="Our Collaborators" height="h-[40vh] min-h-[300px]">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-4">Our Collaborators</h1>
-          </div>
+    <div className="bg-secondary pt-20">
+      {/* Hero */}
+      <section className="relative min-h-[40vh] flex items-center justify-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: 'url(/images/projects/project-9.jpg)' }}
+        />
+        <div className="absolute inset-0 bg-black/80" />
+        <div className="relative text-center px-6">
+          <h1
+            className="text-white text-4xl md:text-5xl lg:text-6xl font-bold"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            Our Collaborators
+          </h1>
         </div>
-      </Parallax>
+      </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Our Collaborators' }]} onNavigate={onNavigate} />
-      </div>
-
-      {collaborators.map((collab, index) => (
-        <section
-          key={collab.name}
-          className={`py-16 ${index % 2 === 0 ? 'bg-white' : 'bg-stone-50'}`}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+      {/* Content */}
+      <section className="py-20 md:py-28">
+        <div className="max-w-4xl mx-auto px-6 md:px-10">
+          {collaborators.map((collab, idx) => (
+            <div
+              key={collab.name}
+              className={`pb-16 ${idx < collaborators.length - 1 ? 'mb-16 border-b border-dark-border' : ''}`}
+            >
               {/* Logo */}
-              <div className="lg:col-span-1">
-                <div className="bg-white p-8 rounded-sm shadow-md flex items-center justify-center h-48 sticky top-24">
-                  <img
-                    src={collab.logo}
-                    alt={collab.name}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
+              <div className="mb-8">
+                <img
+                  src={collab.logo}
+                  alt={collab.name}
+                  className="max-h-24 max-w-xs object-contain"
+                />
               </div>
 
-              {/* Content */}
-              <div className="lg:col-span-3">
-                <h2 className="text-3xl md:text-4xl font-light text-stone-800 mb-6">
-                  {collab.name}
-                </h2>
+              {/* Description */}
+              <div className="space-y-4 mb-8">
                 {collab.description.map((para, i) => (
-                  <p key={i} className="text-stone-600 leading-relaxed mb-4">
+                  <p key={i} className="text-text text-[15px] leading-[2em]">
                     {para}
                   </p>
                 ))}
+              </div>
 
-                {collab.sections &&
-                  collab.sections.map((section) => (
-                    <div key={section.title} className="mt-8">
-                      <h3 className="text-xl font-medium text-amber-600 mb-3">
+              {/* Soft services (Christie Projects) */}
+              {collab.softServices && (
+                <div>
+                  <h3
+                    className="text-white text-lg font-semibold mb-4"
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
+                  >
+                    {collab.name} soft services include:
+                  </h3>
+                  <ul className="space-y-2">
+                    {collab.softServices.map((service, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 text-text text-[15px] leading-relaxed"
+                      >
+                        <span className="text-primary mt-1">▪</span>
+                        {service}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Sections (Haven Properties) */}
+              {collab.sections && (
+                <div className="space-y-8">
+                  {collab.sections.map((section, i) => (
+                    <div key={i}>
+                      <h3
+                        className="text-primary text-lg font-semibold mb-3"
+                        style={{ fontFamily: 'Poppins, sans-serif' }}
+                      >
                         {section.title}
                       </h3>
-                      <p className="text-stone-600 leading-relaxed">
+                      <p className="text-text text-[15px] leading-[2em]">
                         {section.content}
                       </p>
                     </div>
                   ))}
-              </div>
+                </div>
+              )}
             </div>
-          </div>
-        </section>
-      ))}
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
