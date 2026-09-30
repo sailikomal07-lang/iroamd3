@@ -48,21 +48,29 @@ export default function ProfilePage({ onNavigate }: ProfilePageProps) {
       {/* Values */}
       <section className="py-16 bg-stone-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {profileValues.map((value, i) => (
               <div
-                key={value}
-                className="group relative overflow-hidden rounded-sm bg-white/5 p-6 text-center hover:bg-amber-500 transition-all duration-500"
+                key={value.name}
+                className="group relative overflow-hidden rounded-sm bg-white/5 p-8 hover:bg-white/10 transition-all duration-500"
                 style={{
                   animation: `fadeInUp 0.5s ease-out ${i * 0.1}s both`,
                 }}
               >
-                <div className="text-3xl font-light text-amber-500 mb-2 group-hover:text-white transition-colors">
+                <div className="text-3xl font-light text-amber-500 mb-3">
                   0{i + 1}
                 </div>
-                <h3 className="text-white text-sm font-medium uppercase tracking-wider group-hover:text-white transition-colors">
-                  {value}
+                <h3 className="text-white text-lg font-medium uppercase tracking-wider mb-4">
+                  {value.name}
                 </h3>
+                <ul className="space-y-2">
+                  {value.points.map((point, j) => (
+                    <li key={j} className="flex items-start gap-3 text-white/60 text-sm leading-relaxed">
+                      <span className="text-amber-500 mt-1 shrink-0">▪</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>

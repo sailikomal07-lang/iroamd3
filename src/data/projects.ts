@@ -226,12 +226,53 @@ export const processSteps = [
 ];
 
 export const profileValues = [
-  "Creative",
-  "Collaborative",
-  "Sustainable",
-  "Progressive",
-  "Innovative",
-  "Client Focused",
+  {
+    name: "Creative",
+    points: [
+      "Every project is unique – client, site, budget, program, and aspirations.",
+      "We Bring curiosity and energy in search for the best outcome not just the obvious one.",
+      "Creatively looking at an old problem.",
+      "Creativity is the prerequisite to innovation",
+    ],
+  },
+  {
+    name: "Collaborative",
+    points: [
+      "We pride ourselves on a highly collaborative process that is tailored to suit the needs of the project.",
+      "We listen. And we believe that sharing ideas, experience and knowledge with clients, colleagues or consultants can only enrich the process and result in optimal built outcomes",
+    ],
+  },
+  {
+    name: "Sustainable",
+    points: [
+      "Sustainability informs every decision we make in the realisation of a building.",
+      "We acknowledge the impact the building industry has on shaping our future, both socially and environmentally",
+    ],
+  },
+  {
+    name: "Progressive",
+    points: [
+      "Every project broadens our horizons.",
+      "Clients with varied life experiences and project objectives that inform our design solutions.",
+      "Our involvement in diverse sectors enables us to learn from pioneering clients and consultants with our collective knowledge ever expanding",
+    ],
+  },
+  {
+    name: "Innovative",
+    points: [
+      "We are tireless in our search for innovative solutions to complex problems.",
+      "Exploration of concepts, technologies, software and processes results in innovative built outcomes",
+    ],
+  },
+  {
+    name: "Client Focused",
+    points: [
+      "Behind every project is a committed client with an unrealised vision.",
+      "We are motivated by successfully realising this vision.",
+      "We focus on establishing resilient relationships based on mutual trust and clear communication.",
+      "Many clients return with new projects due to the relationships we build",
+    ],
+  },
 ];
 
 export const industryAssociations = [
