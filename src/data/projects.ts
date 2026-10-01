@@ -344,21 +344,9 @@ export const aboutCollaborations = [
 ];
 
 export const homeHeroSlides = [
-  {
-    title: "Innovative Designs",
-    text: "At Iroamd3, we merge visionary concepts with precise execution to craft innovative designs and timeless structures",
-    image: "/images/misc/pic7.jpeg",
-  },
-  {
-    title: "Crafting Spaces",
-    text: "Our mission at Iroamd3 is to create environments that resonate with the essence of inspired living through meticulous craftsmanship and thoughtful design",
-    image: "/images/projects/project-4.jpg",
-  },
-  {
-    title: "Brilliant Functionality",
-    text: "Iroamd3 is dedicated to designing spaces that not only exude architectural elegance but also serve as functional brilliance, enhancing lives and experiences",
-    image: "/images/projects/project-5.jpg",
-  },
+  { image: "/images/misc/slide-1.jpg" },
+  { image: "/images/misc/slide-2.jpg" },
+  { image: "/images/misc/slide-3.jpg" },
 ];
 
 export const homeFeaturedProjects = projects.slice(0, 6);

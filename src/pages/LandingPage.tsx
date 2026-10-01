@@ -13,39 +13,43 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
+    const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
   return (
     <div className="bg-secondary">
-      {/* Hero Slider - full screen parallax */}
+      {/* Full screen parallax slider */}
       <section className="relative h-screen overflow-hidden">
         {homeHeroSlides.map((slide, i) => (
           <div
             key={i}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
+            className={`absolute inset-0 transition-opacity duration-[1200ms] ${
               i === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${slide.image})` }}
+              className="absolute inset-0 bg-cover bg-center scale-105"
+              style={{
+                backgroundImage: `url(${slide.image})`,
+                transform: `scale(1.05) translate${i === currentSlide ? 'Y(0)' : 'Y(2%)'}`,
+                transition: 'transform 6s ease-out',
+              }}
             />
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
         ))}
 
-        {/* Logo centered */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-center">
+        {/* Centered logo */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <img
             src="/images/logos/iroamd3-logo.png"
             alt="Iroamd3"
-            className="h-24 md:h-32 w-auto mx-auto opacity-90"
+            className="h-24 md:h-32 w-auto mx-auto"
           />
         </div>
 
-        {/* Slide indicators */}
+        {/* Slide pagination dots */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-10">
           {homeHeroSlides.map((_, i) => (
             <button
@@ -57,14 +61,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
               aria-label={`Slide ${i + 1}`}
             />
           ))}
-        </div>
-
-        {/* Scroll hint */}
-        <div className="absolute bottom-10 right-10 z-10 hidden md:block">
-          <p className="text-white/40 text-[12px] uppercase tracking-wider mb-1">
-            Scroll
-          </p>
-          <div className="w-px h-12 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </section>
 
