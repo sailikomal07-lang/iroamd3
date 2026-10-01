@@ -29,7 +29,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             }`}
           >
             <div
-              className="absolute inset-0 bg-cover bg-center scale-105"
+              className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: `url(${slide.image})`,
                 transform: `scale(1.05) translate${i === currentSlide ? 'Y(0)' : 'Y(2%)'}`,
@@ -67,7 +67,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
       {/* Three bordered columns: About, Process, Profile */}
       <section className="bg-secondary">
         <div className="grid grid-cols-1 md:grid-cols-3 border-t border-white/10">
-          {/* About */}
           <button
             onClick={() => onNavigate('/about')}
             className="group text-left p-10 md:p-12 lg:p-16 border-r border-white/10 hover:bg-secondary-light transition-colors"
@@ -84,7 +83,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             </p>
           </button>
 
-          {/* Process */}
           <button
             onClick={() => onNavigate('/process')}
             className="group text-left p-10 md:p-12 lg:p-16 border-r border-white/10 hover:bg-secondary-light transition-colors"
@@ -101,7 +99,6 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             </p>
           </button>
 
-          {/* Profile */}
           <button
             onClick={() => onNavigate('/profile')}
             className="group text-left p-10 md:p-12 lg:p-16 hover:bg-secondary-light transition-colors"
