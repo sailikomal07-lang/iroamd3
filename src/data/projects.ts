@@ -218,7 +218,7 @@ export const collaborators = [
 ];
 
 export const navItems = [
-  { label: "Home", path: "/" },
+  { label: "Home", path: "/home" },
   { label: "About", path: "/about" },
   { label: "Profile", path: "/profile" },
   { label: "ESD", path: "/esd" },
