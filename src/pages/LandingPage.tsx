@@ -45,7 +45,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           <img
             src="/images/logos/iroamd3-logo.png"
             alt="Iroamd3"
-            className="h-24 md:h-32 w-auto mx-auto"
+            className="h-48 md:h-64 w-auto mx-auto"
           />
         </div>
 
